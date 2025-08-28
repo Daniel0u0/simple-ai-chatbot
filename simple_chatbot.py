@@ -1,22 +1,24 @@
 import os
-from azure.ai.openai import OpenAIClient
-from azure.core.credentials import AzureKeyCredential
+from dotenv import load_dotenv
+from openai import AzureOpenAI
 
-# 設定環境變數 (在命令列或 .env 檔設)
-# os.environ['AZURE_OPENAI_API_KEY'] = 'your-api-key'
-# os.environ['AZURE_OPENAI_ENDPOINT'] = 'https://your-endpoint.openai.azure.com/'
-# os.environ['AZURE_OPENAI_DEPLOYMENT'] = 'gpt-35-turbo'  # 你的部署名
+# 載入 .env 檔
+load_dotenv()
 
-# 取得憑證
+# 讀取 key 和 endpoint
 api_key = os.getenv('AZURE_OPENAI_API_KEY')
 endpoint = os.getenv('AZURE_OPENAI_ENDPOINT')
 deployment = os.getenv('AZURE_OPENAI_DEPLOYMENT')
 
 if not all([api_key, endpoint, deployment]):
-    raise ValueError("請設定 Azure OpenAI 環境變數。")
+    raise ValueError("請設定 .env 檔中的 Azure OpenAI 變數。")
 
 # 創建客戶端
-client = OpenAIClient(endpoint, AzureKeyCredential(api_key))
+client = AzureOpenAI(
+    azure_endpoint=endpoint,
+    api_key=api_key,
+    api_version="2024-10-21"  # 用最新版本
+)
 
 def get_chat_response(prompt):
     response = client.chat.completions.create(
