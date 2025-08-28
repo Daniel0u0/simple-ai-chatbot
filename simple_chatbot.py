@@ -2,10 +2,10 @@ import os
 from dotenv import load_dotenv
 from openai import AzureOpenAI
 
-# 載入 .env 檔
+# Load .env file
 load_dotenv()
 
-# 讀取 key 和 endpoint
+# Read key and endpoint
 api_key = os.getenv('AZURE_OPENAI_API_KEY')
 endpoint = os.getenv('AZURE_OPENAI_ENDPOINT')
 deployment = os.getenv('AZURE_OPENAI_DEPLOYMENT')
@@ -13,11 +13,11 @@ deployment = os.getenv('AZURE_OPENAI_DEPLOYMENT')
 if not all([api_key, endpoint, deployment]):
     raise ValueError("請設定 .env 檔中的 Azure OpenAI 變數。")
 
-# 創建客戶端
+# Create Azure OpenAI client
 client = AzureOpenAI(
     azure_endpoint=endpoint,
     api_key=api_key,
-    api_version="2024-10-21"  # 用最新版本
+    api_version="2024-10-21"  # use the latest API version
 )
 
 def get_chat_response(prompt):
@@ -27,7 +27,7 @@ def get_chat_response(prompt):
     )
     return response.choices[0].message.content
 
-# 簡單命令列互動
+# Simple command-line interface
 print("歡迎使用簡單 Chatbot！輸入 'exit' 結束。")
 while True:
     user_input = input("你：")
